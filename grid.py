@@ -31,7 +31,6 @@ class Grid:
         self.grid = [list([Cell() for _ in range(y)]) for _ in range(x)]
 
     def tick(self):
-        print(self.grid)
         new_grid = Grid(self.width, self.height)
         for x in range(self.width):
             for y in range(self.height):

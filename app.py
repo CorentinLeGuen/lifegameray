@@ -19,7 +19,7 @@ class Application:
 
         set_target_fps(60)
 
-        self.grid_size = (10, 10)
+        self.grid_size = (50, 50)
         self.grid_ratio = (800 // self.grid_size[0], 800 // self.grid_size[1])
         self.grid = Grid(self.grid_size[0], self.grid_size[1])
 
@@ -57,8 +57,6 @@ class Application:
                         draw_rectangle_lines(self.grid_ratio[0] * row, self.grid_ratio[1] * col, self.grid_ratio[0], self.grid_ratio[1], LIGHTGRAY)
                     if self.grid.get_cell_at_position(row, col).is_alive:
                         draw_rectangle(self.grid_ratio[0] * row, self.grid_ratio[1] * col, self.grid_ratio[0], self.grid_ratio[1], BLACK)
-                    elif self.is_debug_enabled:
-                        draw_text(str(self.grid.get_cell_at_position(row, col).get_neighbors()), self.grid_ratio[0] * row + 10, self.grid_ratio[1] * col + 10, 18, LIGHTGRAY)
 
             # Draw background window
             draw_rectangle_lines(0, 0, 800, 800, DARKGRAY)
