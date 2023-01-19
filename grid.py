@@ -31,8 +31,14 @@ class Grid:
         self.grid = [list([Cell() for _ in range(y)]) for _ in range(x)]
 
     def tick(self):
-        # Apply 4 rules
-        return self.height * [self.width * [Cell()]]
+        print(self.grid)
+        new_grid = Grid(self.width, self.height)
+        for x in range(self.width):
+            for y in range(self.height):
+                if (self.grid[x][y].get_neighbors() == 3 and not self.grid[x][y].is_alive) \
+                        or ((self.grid[x][y].get_neighbors() == 2 or self.grid[x][y].get_neighbors() == 3) and self.grid[x][y].is_alive):
+                    new_grid.switch_at_position(x, y)
+        self.grid = new_grid.grid
 
     def get_cell_at_position(self, x: int, y: int):
         return self.grid[x][y]
