@@ -23,13 +23,17 @@ class Application:
         self.grid_ratio = (800 // self.grid_size[0], 800 // self.grid_size[1])
         self.grid = Grid(self.grid_size[0], self.grid_size[1])
 
-        self.rect_debug = Rectangle(1, 800, 199, 49)
+        self.rect_debug = Rectangle(0, 800, 200, 50)
         self.text_debug = ("Debug on", "Debug off")
         self.measures_debug = (measure_text(self.text_debug[0], 15), measure_text(self.text_debug[1], 15))
 
-        self.rect_quit = Rectangle(599, 800, 199, 99)
+        self.rect_quit = Rectangle(600, 800, 200, 100)
         self.text_quit = "Quit"
         self.measures_quit = measure_text(self.text_quit, 30)
+
+        self.rect_play = Rectangle(200, 800, 200, 100)
+        self.text_play = ("Run", "Stop")
+        self.measures_play = (measure_text(self.text_play[0], 30), measure_text(self.text_play[1], 30))
 
         self.is_debug_enabled = True
         self.is_running = False
@@ -44,6 +48,8 @@ class Application:
             if self.frame >= self.fps:
                 self.count += 1
                 self.frame = 0
+                if self.is_running:
+                    self.grid.tick()
 
             for row in range(self.grid_size[0]):
                 for col in range(self.grid_size[1]):
@@ -74,6 +80,16 @@ class Application:
                 x = int(mp.x // self.grid_ratio[0])
                 y = int(mp.y // self.grid_ratio[1])
                 self.grid.switch_at_position(x, y)
+
+            # # Play
+            draw_rectangle_rec(self.rect_play, LIGHTGRAY)
+            if self.is_running:
+                draw_text(self.text_play[1], int(self.rect_play.x + (self.rect_play.width - self.measures_play[1]) // 2), int(self.rect_play.y + 30), 30, DARKPURPLE)
+            else:
+                draw_text(self.text_play[0], int(self.rect_play.x + (self.rect_play.width - self.measures_play[0]) // 2), int(self.rect_play.y + 30), 30, DARKGREEN)
+            if check_collision_point_rec(get_mouse_position(), self.rect_play) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+                self.is_running = not self.is_running
+            draw_rectangle_lines_ex(self.rect_play, 1.0, BORDER_GRAY)
 
             # # Quit
             draw_rectangle_rec(self.rect_quit, LIGHTGRAY)
