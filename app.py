@@ -89,6 +89,7 @@ class Application:
                 draw_text(self.text_play[0], int(self.rect_play.x + (self.rect_play.width - self.measures_play[0]) // 2), int(self.rect_play.y + 30), 30, DARKGREEN)
             if check_collision_point_rec(get_mouse_position(), self.rect_play) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
                 self.is_running = not self.is_running
+                self.frame = 0
             draw_rectangle_lines_ex(self.rect_play, 1.0, BORDER_GRAY)
 
             # # Quit
