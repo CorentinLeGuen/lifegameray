@@ -18,12 +18,12 @@ class Application:
         self.count = 0
 
         self.min_speed = 1
-        self.max_speed = 32
-        self.speed = self.min_speed
+        self.max_speed = 60
+        self.speed = 30
 
         set_target_fps(60)
 
-        self.grid_size = (50, 50)
+        self.grid_size = (20, 20)
         self.grid_ratio = (800 // self.grid_size[0], 800 // self.grid_size[1])
         self.grid = Grid(self.grid_size[0], self.grid_size[1])
 
@@ -93,7 +93,6 @@ class Application:
             if check_collision_point_rec(get_mouse_position(), self.rect_clean) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
                 self.grid.clear()
                 self.is_running = False
-
 
             # # Play
             draw_rectangle_rec(self.rect_play, LIGHTGRAY)
