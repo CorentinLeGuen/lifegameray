@@ -16,10 +16,7 @@ class Cell:
         return self.is_alive
 
     def switch_alive(self):
-        if self.is_alive:
-            self.is_alive = False
-        else:
-            self.is_alive = True
+        self.is_alive = not self.is_alive
 
     def __repr__(self):
         if self.is_alive:
