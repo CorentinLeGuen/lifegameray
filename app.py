@@ -17,6 +17,10 @@ class Application:
         self.frame = 0
         self.count = 0
 
+        self.min_speed = 1
+        self.max_speed = 32
+        self.speed = self.min_speed
+
         set_target_fps(60)
 
         self.grid_size = (50, 50)
@@ -26,6 +30,10 @@ class Application:
         self.rect_debug = Rectangle(0, 800, 200, 50)
         self.text_debug = ("Debug on", "Debug off")
         self.measures_debug = (measure_text(self.text_debug[0], 15), measure_text(self.text_debug[1], 15))
+
+        self.rect_clean = Rectangle(0, 850, 200, 50)
+        self.text_clean = "Clean up"
+        self.measures_clean = measure_text(self.text_clean, 15)
 
         self.rect_quit = Rectangle(600, 800, 200, 100)
         self.text_quit = "Quit"
@@ -45,7 +53,7 @@ class Application:
 
             # Time clock ticker
             self.frame += 1
-            if self.frame >= self.fps:
+            if self.frame >= self.fps // self.speed:
                 self.count += 1
                 self.frame = 0
                 if self.is_running:
@@ -78,6 +86,14 @@ class Application:
                 x = int(mp.x // self.grid_ratio[0])
                 y = int(mp.y // self.grid_ratio[1])
                 self.grid.switch_at_position(x, y)
+
+            # # Clean
+            draw_rectangle_rec(self.rect_clean, LIGHTGRAY)
+            draw_text(self.text_clean, int(self.rect_clean.x + (self.rect_clean.width - self.measures_clean) // 2), int(self.rect_clean.y + 10), 15, DARKGRAY)
+            if check_collision_point_rec(get_mouse_position(), self.rect_clean) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+                self.grid.clear()
+                self.is_running = False
+
 
             # # Play
             draw_rectangle_rec(self.rect_play, LIGHTGRAY)

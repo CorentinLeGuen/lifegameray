@@ -39,6 +39,9 @@ class Grid:
                     new_grid.switch_at_position(x, y)
         self.grid = new_grid.grid
 
+    def clear(self):
+        self.grid = [list([Cell() for _ in range(self.height)]) for _ in range(self.width)]
+
     def get_cell_at_position(self, x: int, y: int):
         return self.grid[x][y]
 
