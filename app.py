@@ -17,9 +17,6 @@ class Application:
         self.frame = 0
         self.count = 0
 
-        self.min_speed = 1
-        self.max_speed = 60
-        self.speed = 30
 
         set_target_fps(60)
 
@@ -31,17 +28,23 @@ class Application:
         self.text_debug = ("Debug on", "Debug off")
         self.measures_debug = (measure_text(self.text_debug[0], 15), measure_text(self.text_debug[1], 15))
 
-        self.rect_clean = Rectangle(0, 850, 200, 50)
+        self.rect_clean = Rectangle(600, 800, 200, 50)
         self.text_clean = "Clean up"
         self.measures_clean = measure_text(self.text_clean, 15)
 
-        self.rect_quit = Rectangle(600, 800, 200, 100)
+        self.rect_quit = Rectangle(600, 850, 200, 50)
         self.text_quit = "Quit"
         self.measures_quit = measure_text(self.text_quit, 30)
 
         self.rect_play = Rectangle(200, 800, 200, 100)
         self.text_play = ("Run", "Stop")
         self.measures_play = (measure_text(self.text_play[0], 30), measure_text(self.text_play[1], 30))
+
+        self.rect_speed = (Rectangle(400, 800, 50, 50), Rectangle(450, 800, 50, 50), Rectangle(500, 800, 50, 50), Rectangle(550, 800, 50, 50))
+        self.text_speed = ("Speed", "-", "<speed>", "+")
+        self.speeds = [1, 10, 15, 30, 45, 60]
+
+        self.speed = 3
 
         self.is_debug_enabled = True
         self.is_running = False
@@ -53,7 +56,7 @@ class Application:
 
             # Time clock ticker
             self.frame += 1
-            if self.frame >= self.fps // self.speed:
+            if self.frame >= self.fps // self.speeds[self.speed]:
                 self.count += 1
                 self.frame = 0
                 if self.is_running:
@@ -93,6 +96,7 @@ class Application:
             if check_collision_point_rec(get_mouse_position(), self.rect_clean) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
                 self.grid.clear()
                 self.is_running = False
+            draw_rectangle_lines_ex(self.rect_clean, 1.0, BORDER_GRAY)
 
             # # Play
             draw_rectangle_rec(self.rect_play, LIGHTGRAY)
@@ -105,9 +109,28 @@ class Application:
                 self.frame = 0
             draw_rectangle_lines_ex(self.rect_play, 1.0, BORDER_GRAY)
 
+            # # Speed
+            draw_rectangle_rec(self.rect_speed[0], LIGHTGRAY)
+            draw_rectangle_rec(self.rect_speed[1], LIGHTGRAY)
+            draw_rectangle_rec(self.rect_speed[2], LIGHTGRAY)
+            draw_rectangle_rec(self.rect_speed[3], LIGHTGRAY)
+
+            draw_text(self.text_speed[0], int(self.rect_speed[0].x + 3), int(self.rect_speed[0].y + 15), 15, DARKGRAY)
+            draw_text(self.text_speed[1], int(self.rect_speed[1].x + 15), int(self.rect_speed[1].y + 5), 45, DARKGRAY)
+            draw_text(str(self.speeds[self.speed]), int(self.rect_speed[2].x + 10), int(self.rect_speed[2].y + 12), 30, DARKGRAY)
+            draw_text(self.text_speed[3], int(self.rect_speed[3].x + 15), int(self.rect_speed[3].y + 5), 45, DARKGRAY)
+
+            if check_collision_point_rec(get_mouse_position(), self.rect_speed[1]) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and self.speed > 0:
+                self.speed -= 1
+            elif check_collision_point_rec(get_mouse_position(), self.rect_speed[3]) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and self.speed < len(self.speeds) - 1:
+                self.speed += 1
+
+            draw_rectangle_lines_ex(self.rect_speed[1], 1.0, BORDER_GRAY)
+            draw_rectangle_lines_ex(self.rect_speed[3], 1.0, BORDER_GRAY)
+
             # # Quit
             draw_rectangle_rec(self.rect_quit, LIGHTGRAY)
-            draw_text(self.text_quit, int(self.rect_quit.x + (self.rect_quit.width - self.measures_quit) // 2), int(self.rect_quit.y + 30), 30, DARKGRAY)
+            draw_text(self.text_quit, int(self.rect_quit.x + (self.rect_quit.width - self.measures_quit) // 2), int(self.rect_quit.y + 10), 30, DARKGRAY)
             draw_rectangle_lines_ex(self.rect_quit, 1.0, BORDER_GRAY)
             if check_collision_point_rec(get_mouse_position(), self.rect_quit) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
                 break
