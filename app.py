@@ -47,6 +47,9 @@ class Application:
         self.text_grid = ("S", "M", "L", "XL")
         self.size_grid = (20, 50, 80, 100)
 
+        self.text_credit = "Made by\nCorentin Le Guen"
+        self.measures_credit = measure_text(self.text_credit, 15)
+
         self.speed = 3
 
         self.is_debug_enabled = True
@@ -92,6 +95,8 @@ class Application:
                 x = int(mp.x // self.grid_ratio[0])
                 y = int(mp.y // self.grid_ratio[1])
                 self.grid.switch_at_position(x, y)
+
+            draw_text(self.text_credit, int((200 - self.measures_credit) // 2), int(850 + 5), 15, DARKGRAY)
 
             # # Clean
             draw_rectangle_rec(self.rect_clean, LIGHTGRAY)
