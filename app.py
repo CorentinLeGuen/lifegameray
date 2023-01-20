@@ -17,7 +17,6 @@ class Application:
         self.frame = 0
         self.count = 0
 
-
         set_target_fps(60)
 
         self.grid_size = (20, 20)
@@ -43,6 +42,10 @@ class Application:
         self.rect_speed = (Rectangle(400, 800, 50, 50), Rectangle(450, 800, 50, 50), Rectangle(500, 800, 50, 50), Rectangle(550, 800, 50, 50))
         self.text_speed = ("Speed", "-", "<speed>", "+")
         self.speeds = [1, 10, 15, 30, 45, 60]
+
+        self.rect_grid = (Rectangle(400, 850, 50, 50), Rectangle(450, 850, 50, 50), Rectangle(500, 850, 50, 50), Rectangle(550, 850, 50, 50))
+        self.text_grid = ("S", "M", "L", "XL")
+        self.size_grid = (20, 50, 80, 100)
 
         self.speed = 3
 
@@ -128,6 +131,35 @@ class Application:
             draw_rectangle_lines_ex(self.rect_speed[1], 1.0, BORDER_GRAY)
             draw_rectangle_lines_ex(self.rect_speed[3], 1.0, BORDER_GRAY)
 
+            # # Grid
+            draw_rectangle_rec(self.rect_grid[0], LIGHTGRAY)
+            draw_rectangle_rec(self.rect_grid[1], LIGHTGRAY)
+            draw_rectangle_rec(self.rect_grid[2], LIGHTGRAY)
+            draw_rectangle_rec(self.rect_grid[3], LIGHTGRAY)
+
+            draw_text(self.text_grid[0], int(self.rect_grid[0].x + 10), int(self.rect_grid[0].y + 10), 30, DARKGRAY)
+            draw_text(self.text_grid[1], int(self.rect_grid[1].x + 10), int(self.rect_grid[1].y + 10), 30, DARKGRAY)
+            draw_text(self.text_grid[2], int(self.rect_grid[2].x + 10), int(self.rect_grid[2].y + 10), 30, DARKGRAY)
+            draw_text(self.text_grid[3], int(self.rect_grid[3].x + 10), int(self.rect_grid[3].y + 10), 30, DARKGRAY)
+
+            if check_collision_point_rec(get_mouse_position(), self.rect_grid[0]) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+                self.__set_grid__(self.size_grid[0])
+                self.is_running = False
+            if check_collision_point_rec(get_mouse_position(), self.rect_grid[1]) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+                self.__set_grid__(self.size_grid[1])
+                self.is_running = False
+            if check_collision_point_rec(get_mouse_position(), self.rect_grid[2]) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+                self.__set_grid__(self.size_grid[2])
+                self.is_running = False
+            if check_collision_point_rec(get_mouse_position(), self.rect_grid[3]) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+                self.__set_grid__(self.size_grid[3])
+                self.is_running = False
+
+            draw_rectangle_lines_ex(self.rect_grid[0], 1.0, BORDER_GRAY)
+            draw_rectangle_lines_ex(self.rect_grid[1], 1.0, BORDER_GRAY)
+            draw_rectangle_lines_ex(self.rect_grid[2], 1.0, BORDER_GRAY)
+            draw_rectangle_lines_ex(self.rect_grid[3], 1.0, BORDER_GRAY)
+
             # # Quit
             draw_rectangle_rec(self.rect_quit, LIGHTGRAY)
             draw_text(self.text_quit, int(self.rect_quit.x + (self.rect_quit.width - self.measures_quit) // 2), int(self.rect_quit.y + 10), 30, DARKGRAY)
@@ -136,6 +168,11 @@ class Application:
                 break
 
             end_drawing()
+
+    def __set_grid__(self, x: int):
+        self.grid_size = (x, x)
+        self.grid_ratio = (800 // self.grid_size[0], 800 // self.grid_size[1])
+        self.grid = Grid(self.grid_size[0], self.grid_size[1])
 
 
 if __name__ == '__main__':
