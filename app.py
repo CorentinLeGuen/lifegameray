@@ -17,7 +17,7 @@ class Application:
         self.frame = 0
         self.count = 0
 
-        set_target_fps(60)
+        set_target_fps(self.fps)
 
         self.grid_size = (20, 20)
         self.grid_ratio = (800 // self.grid_size[0], 800 // self.grid_size[1])
@@ -68,14 +68,17 @@ class Application:
                 if self.is_running:
                     self.grid.tick()
 
+            # Drawing grid and cells
             for row in range(self.grid_size[0]):
                 for col in range(self.grid_size[1]):
+                    # Grid if debug is enabled
                     if self.is_debug_enabled:
                         draw_rectangle_lines(self.grid_ratio[0] * row, self.grid_ratio[1] * col, self.grid_ratio[0], self.grid_ratio[1], LIGHTGRAY)
-                    if self.grid.get_cell_at_position(row, col).is_alive:
+                    # Draw black rectangle for alive cells
+                    if self.grid.get_cell_at_position(row, col).is_alive():
                         draw_rectangle(self.grid_ratio[0] * row, self.grid_ratio[1] * col, self.grid_ratio[0], self.grid_ratio[1], BLACK)
 
-            # Draw background window
+            # Draw background lines window
             draw_rectangle_lines(0, 0, 800, 800, DARKGRAY)
             draw_rectangle_lines(0, 799, 800, 101, DARKGRAY)
 
@@ -90,12 +93,14 @@ class Application:
                 self.is_debug_enabled = not self.is_debug_enabled
             draw_rectangle_lines_ex(self.rect_debug, 1.0, BORDER_GRAY)
 
+            # Detect what cell is clicked
             if is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not self.is_running:
                 mp = get_mouse_position()
                 x = int(mp.x // self.grid_ratio[0])
                 y = int(mp.y // self.grid_ratio[1])
                 self.grid.switch_at_position(x, y)
 
+            # Credit text
             draw_text(self.text_credit, int((200 - self.measures_credit) // 2), int(850 + 5), 15, DARKGRAY)
 
             # # Clean
@@ -128,8 +133,10 @@ class Application:
             draw_text(str(self.speeds[self.speed]), int(self.rect_speed[2].x + 10), int(self.rect_speed[2].y + 12), 30, DARKGRAY)
             draw_text(self.text_speed[3], int(self.rect_speed[3].x + 15), int(self.rect_speed[3].y + 5), 45, DARKGRAY)
 
+            # Decreasing speed
             if check_collision_point_rec(get_mouse_position(), self.rect_speed[1]) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and self.speed > 0:
                 self.speed -= 1
+            # Increasing speed
             elif check_collision_point_rec(get_mouse_position(), self.rect_speed[3]) and is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and self.speed < len(self.speeds) - 1:
                 self.speed += 1
 

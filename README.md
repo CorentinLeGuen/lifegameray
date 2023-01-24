@@ -2,6 +2,8 @@
 
 The Conway's Game of Life made with Raylib.
 
+Grid and cell are defined in the [grid.py file](grid.py).
+
 ## Install
 
 `pip install -r requirements.txt`
