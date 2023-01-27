@@ -18,6 +18,9 @@ class Cell:
     def switch_alive(self):
         self.__alive = not self.__alive
 
+    def __repr__(self):
+        return f'Cell(is_alive={self.__alive}, neighbors={self.__neighbors})'
+
 
 class Grid:
     def __init__(self, x: int, y: int):
@@ -77,3 +80,6 @@ class Grid:
                         self.grid[x - 1][y + 1].remove_neighbor()  # DOWN / LEFT
                     if x + 1 < self.width:  # RIGHT
                         self.grid[x + 1][y + 1].remove_neighbor()  # DOWN / RIGHT
+
+    def __repr__(self):
+        return f'Grid(cols={self.width}, rows={self.height})'
